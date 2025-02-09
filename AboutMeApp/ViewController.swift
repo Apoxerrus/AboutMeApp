@@ -7,21 +7,27 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-    
-    @IBOutlet var userName: UITextField!
-    @IBOutlet var password: UITextField!
-    
-    @IBOutlet var logInButoon: UIButton!
-    
-    @IBOutlet var forgotUserName: UIButton!
-    @IBOutlet var forrgotPassword: UIButton!
+final class ViewController: UIViewController {
     
     let validUserName = "1"
     let validPassword = "1"
     
+    @IBOutlet private var userName: UITextField!
+    @IBOutlet private var password: UITextField!
+    
+    @IBOutlet private var logInButoon: UIButton!
+    
+    @IBOutlet private var forgotUserName: UIButton!
+    @IBOutlet private var forrgotPassword: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    @IBAction func logInButtonTapped(_ sender: UIButton) {
+        if shouldPerformSegue(withIdentifier: "goToWelcomeScreen", sender: sender) {
+                    performSegue(withIdentifier: "goToWelcomeScreen", sender: sender)
+                }
     }
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
@@ -48,11 +54,15 @@ class ViewController: UIViewController {
             }
         }
     
-    @IBAction func logInButtonTapped(_ sender: UIButton) {
-        if shouldPerformSegue(withIdentifier: "goToWelcomeScreen", sender: sender) {
-                    performSegue(withIdentifier: "goToWelcomeScreen", sender: sender)
-                }
-    }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+           super .touchesBegan(touches, with: event)
+           view.endEditing(true)
+       }
+    
+    @IBAction func unwindToLogin(_ segue: UIStoryboardSegue) {
+            userName.text = ""
+            password.text = ""
+        }
     
     @IBAction func forgotUserNameTapped(_ sender: UIButton) {
         let alert = UIAlertController(title: "Oops!",
@@ -76,13 +86,4 @@ class ViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super .touchesBegan(touches, with: event)
-        view.endEditing(true)
-    }
-    
-    @IBAction func unwindToLogin(_ segue: UIStoryboardSegue) {
-        userName.text = ""
-        password.text = ""
-    }
 }
